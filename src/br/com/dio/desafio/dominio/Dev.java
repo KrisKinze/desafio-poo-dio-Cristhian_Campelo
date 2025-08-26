@@ -4,19 +4,32 @@ import java.util.*;
 
 public class Dev {
     private String nome;
+    private Bootcamp bootcampInscrito; 
     private Set<Conteudo> conteudosInscritos = new LinkedHashSet<>();
     private Set<Conteudo> conteudosConcluidos = new LinkedHashSet<>();
 
     public void inscreverBootcamp(Bootcamp bootcamp){
+        //Não se inscrever se já estiver em um bootcamp.
+        if (this.bootcampInscrito != null) {
+            System.err.println("ERRO: " + this.nome + " já está inscrito(a) no " + this.bootcampInscrito.getNome());
+            return;
+        }
+
+
         this.conteudosInscritos.addAll(bootcamp.getConteudos());
         bootcamp.getDevsInscritos().add(this);
+        this.bootcampInscrito = bootcamp; 
+        System.out.println("SUCESSO: " + this.nome + " se inscreveu no " + bootcamp.getNome());
     }
 
     public void progredir() {
+
         Optional<Conteudo> conteudo = this.conteudosInscritos.stream().findFirst();
         if(conteudo.isPresent()) {
+
             this.conteudosConcluidos.add(conteudo.get());
             this.conteudosInscritos.remove(conteudo.get());
+            System.out.println(this.nome + " progrediu no conteúdo: " + conteudo.get().getTitulo());
         } else {
             System.err.println("Você não está matriculado em nenhum conteúdo!");
         }

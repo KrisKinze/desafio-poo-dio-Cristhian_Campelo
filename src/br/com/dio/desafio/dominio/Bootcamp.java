@@ -1,8 +1,11 @@
 package br.com.dio.desafio.dominio;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -13,7 +16,6 @@ public class Bootcamp {
     private final LocalDate dataFinal = dataInicial.plusDays(45);
     private Set<Dev> devsInscritos = new HashSet<>();
     private Set<Conteudo> conteudos = new LinkedHashSet<>();
-
 
     public String getNome() {
         return nome;
@@ -53,6 +55,13 @@ public class Bootcamp {
 
     public void setConteudos(Set<Conteudo> conteudos) {
         this.conteudos = conteudos;
+    }
+
+    // Novo método para retornar um ranking de acordo com o XP Total do Dev. 
+    public List<Dev> getRanking() {
+        List<Dev> ranking = new ArrayList<>(this.devsInscritos);
+        ranking.sort(Comparator.comparingDouble(Dev::calcularTotalXp).reversed());
+        return ranking;
     }
 
     @Override
